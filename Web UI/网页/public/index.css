@@ -1,0 +1,24 @@
+html,
+body,
+#container {
+  height: 100%;
+  width: 100%;
+}
+
+.amap-icon img {
+  width: 25px;
+  height: 34px;
+}
+
+.amap-marker-label {
+  border: 0;
+  background-color: transparent;
+}
+
+.info {
+  position: relative;
+  margin: 0;
+  top: 0;
+  right: 0;
+  min-width: 0;
+}

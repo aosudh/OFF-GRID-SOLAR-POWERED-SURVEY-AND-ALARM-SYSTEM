@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="initial-scale=1.0, user-scalable=no, width=device-width"
+    />
+    <title>设置点标注</title>
+    <link
+      rel="stylesheet"
+      href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"
+    />
+    <link rel="stylesheet" href="./index.css" />
+    <script
+      type="text/javascript"
+      src="https://webapi.amap.com/maps?v=2.0&key=c645a184f96dd1077e43a48ec80b7069"
+    ></script>
+    <script
+      src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.26.0/axios.min.js"
+      type="application/javascript"
+    ></script>
+
+    <script type="text/javascript" src="1echarts.min.js"></script>
+    <style>
+      .top {
+        width: 100%;
+        height: 80px;
+        background: #04032a;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 11;
+      }
+
+      .logo {
+        width: 100px;
+        height: 80px;
+        float: left;
+        margin-left: 20px;
+      }
+
+      .sat {
+        color: #fff;
+        font-size: 15px;
+        line-height: 80px;
+        display: inline-block;
+        width: 50px;
+        text-align: center;
+        font-family: "微软雅黑";
+      }
+
+      .tianqi {
+        color: #fff;
+        font-size: 15px;
+        line-height: 80px;
+        display: inline-block;
+        width: 100px;
+        text-align: center;
+        font-family: "微软雅黑";
+      }
+
+      .time {
+        color: #fff;
+        font-size: 15px;
+        line-height: 80px;
+        margin-left: 100px;
+        display: inline-block;
+        margin-right: 20px;
+        font-family: "微软雅黑";
+      }
+
+      .bom {
+        width: 100%;
+        height: 100vh;
+        border: 20px solid #04032a;
+        border-left: 0;
+        box-sizing: border-box;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+        pointer-events: none;
+        border-top: 0;
+      }
+
+      .yuan1 {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #00ff00;
+        margin-right: 5px;
+      }
+
+      .yuan2 {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #f0f030;
+        margin-right: 5px;
+      }
+
+      .yuan3 {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #eb1535;
+        margin-right: 5px;
+      }
+
+      .yuan4 {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #9e9e9e;
+        margin-right: 5px;
+      }
+
+      .amap-logo {
+        display: none !important;
+        pointer-events: none;
+      }
+
+      .bom .left {
+        width: 18%;
+        height: 100vh;
+        background: #04032a;
+      }
+
+      .bom .left .text {
+        color: #66e9e1 !important;
+        padding: 20px;
+        line-height: 1.5em;
+        font-size: 14px;
+        margin-top: 80px;
+      }
+
+      .jiedian {
+        width: 100%;
+        color: #66e9e1;
+        font-size: 14px;
+        line-height: 40px;
+        border-top: 1px solid #66e9e1;
+        margin-top: 20px;
+        padding-top: 20px;
+      }
+
+      .jiedian .jdleft {
+        width: 50%;
+        float: left;
+        text-align: center;
+      }
+
+      .jiedian .jdright {
+        width: 50%;
+        float: right;
+        text-align: center;
+      }
+
+      .weixing {
+        width: 100%;
+        height: 150px;
+        line-height: 50px;
+        color: #66e9e1;
+        font-size: 14px;
+        /* text-indent: 46px; */
+        text-indent: 20px;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="bom">
+      <div class="left">
+        <div class="text">
+          本方案依托华为云和HiSpark_WiFi_IoT Hi3861V100智能开发套件，
+          致力于为传统建筑物或铁塔的监测与状态预警提供全面的解决方案。通过将边缘计算、大数据、云存储和智慧前端相融合，我们打造了一站式的监测与预警软硬件解决方案。我们为传统建筑物或铁塔的监测与状态预警领域提供了一体化的解决方案，帮助用户实时监测和评估设施的运行状况，及早发现异常情况并做出相应的预警和处理，提高运维效率和设施安全性。
+        </div>
+
+        <div class="jiedian">
+          <div class="jdleft">
+            <div>节点</div>
+            <div>节点1</div>
+            <div>节点2</div>
+            <div>节点3</div>
+          </div>
+          <div class="jdright">
+            <div>节点状态</div>
+            <div id="jiedian1">正常</div>
+            <div>离线</div>
+            <div>离线</div>
+          </div>
+        </div>
+        <div class="weixing">卫星数量</div>
+        <div id="container1" style="height: 30%"></div>
+
+        <div></div>
+      </div>
+    </div>
+    <div class="top">
+      <div class="logo">
+        <img src="log.png" alt="" />
+      </div>
+      <div style="float: right">
+        <!-- <div class="sat">SAT</div> -->
+        <!-- <div class="tianqi">26℃~22℃</div> -->
+        <div class="time" id="time"></div>
+      </div>
+    </div>
+    <div id="container"></div>
+
+    <script type="text/javascript">
+      const convert = (gps) => {
+        return new Promise((resolve, reject) => {
+          AMap.convertFrom(gps, "gps", function (status, result) {
+            if (result.info === "ok") {
+              resolve(result);
+            } else {
+              reject(result);
+            }
+          });
+        });
+      };
+
+      async function fetchData() {
+        const { data } = await axios.get("/data");
+        var map = new AMap.Map("container", {
+          resizeEnable: true,
+          layers: [
+            new AMap.TileLayer.Satellite(),
+            new AMap.TileLayer.RoadNet(),
+          ],
+          center: [104.065755, 30.657463],
+          zoom: 13,
+        });
+        const markers = [];
+        for (let i = 0; i < 100; i++) {
+          var pd = "";
+          if (data[i].gps_status == 1) {
+            pd =
+              '<span class="yuan1"></span><span style="color:#00ff00">正常</span>';
+            document.getElementById(
+              "jiedian1"
+            ).innerHTML = `<span style="color:#66e9e1">正常</span>`;
+          }
+          if (data[i].gps_status == 2) {
+            pd =
+              '<span class="yuan3"></span><span style="color:#eb1535">危险</span>';
+            document.getElementById(
+              "jiedian1"
+            ).innerHTML = `<span style="color:#eb1535">危险</span>`;
+          }
+          if (data[i].gps_status == 3) {
+            pd =
+              '<span class="yuan2"></span><span style="color:#f0f030">异常</span>';
+            document.getElementById(
+              "jiedian1"
+            ).innerHTML = `<span style="color:#f0f030">异常</span>`;
+          }
+          if (data[i].gps_status == 0) {
+            pd =
+              '<span class="yuan4"></span><span style="color:#9e9e9e">无状态</span>';
+            document.getElementById(
+              "jiedian1"
+            ).innerHTML = `<span style="color:#9e9e9e">无状态</span>`;
+          }
+
+          // console.log([data[i].longitude, data[i].latitude]);
+          var gps = await convert([data[i].longitude, data[i].latitude]);
+
+          // console.log(gps.locations[0]);
+          let lng = gps.locations[0].lng;
+          let lat = gps.locations[0].lat;
+
+          markers.push({
+            position: [lng, lat],
+            height: data[i].height,
+            diff: data[i].difference,
+            status: pd,
+            power: data[i].power,
+            voltage: data[i].voltage,
+            gpsStatus: data[i].gps_status,
+            satellite: data[i].satellite,
+          });
+        }
+
+        var icon =
+          "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png";
+        markers.forEach(function (marker) {
+          new AMap.Marker({
+            map: map,
+            icon: icon,
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30),
+            label: {
+              offset: new AMap.Pixel(0, 0), //修改label相对于maker的位置
+              content: `<div style="background-color:white;padding:4px">
+                        <ul style="list-style:none;padding:0;margin:0">
+                          <li>${marker.status}</li>
+                          <li>经度：E${marker.position[0]}</li>
+                          <li>纬度：N${marker.position[1]}</li>    
+                          <li>卫星个数：${marker.satellite}</li>    
+                          <li>rtk状态： ${marker.gpsStatus}</li> 
+                          <li>海拔高度：${marker.height}</li>    
+                          <li>充电功率：${marker.power}</li> 
+                          <li>电池电压：${marker.voltage}</li> 
+                        </ul>
+                      </div>`,
+            },
+          });
+          // console.log(marker.satellite);
+        });
+      }
+      fetchData();
+    </script>
+
+    <script type="text/javascript">
+      var dom = document.getElementById("container1");
+      var myChart = echarts.init(dom, null, {
+        renderer: "canvas",
+        useDirtyRect: false,
+      });
+      var app = {};
+
+      var option;
+
+      option = {
+        xAxis: {
+          type: "category",
+          data: ["节点1", "节点2", "节点3"],
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            data: [
+              {
+                value: "12",
+                itemStyle: {
+                  color: "#66e9e1",
+                },
+              },
+              0,
+              0,
+            ],
+            type: "bar",
+          },
+        ],
+      };
+
+      if (option && typeof option === "object") {
+        myChart.setOption(option);
+      }
+
+      window.addEventListener("resize", myChart.resize);
+    </script>
+
+    <script>
+      function timestampToTime(times) {
+        let time = times[1];
+        let mdy = times[0];
+        mdy = mdy.split("/");
+        let month = parseInt(mdy[0]);
+        let day = parseInt(mdy[1]);
+        let year = parseInt(mdy[2]);
+        return year + "-" + month + "-" + day + " " + time;
+      }
+
+      setInterval(() => {
+        let time = new Date();
+        let nowTime = timestampToTime(
+          time.toLocaleString("en-US", { hour12: false }).split(" ")
+        );
+        document.getElementById("time").innerText = nowTime;
+      }, 1000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.TestMapper">
+
+
+    <insert id="insert">
+        insert into poi (longitude,latitude,gps_status,satellite,height,power,voltage) values (#{N1},#{N2},#{N3},#{N4},#{N5},#{N6},#{N7})
+    </insert>
+</mapper>
